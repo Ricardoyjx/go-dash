@@ -14,22 +14,31 @@ import (
 )
 
 func NewWeatherAssistant(ctx context.Context, cm model.ToolCallingChatModel, MaxIter int) (adk.Agent, error) {
-	Logger.Info("Creating supervisor agent")
+	Logger.Info("Creating weather assistant agent")
 
 	webSearch, err := tools.NewWebSearchTool()
+	if err != nil {
+		return nil, err
+	}
+
+	weatherSearch, err := tools.NewWeatherTool()
+	if err != nil {
+		return nil, err
+	}
 
 	agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Model:       cm,
-		Name:        "Supervisor",
-		Description: "Supervisor agent",
+		Name:        "WeatherAssistant",
+		Description: "Weather assistant agent",
 		Instruction: prompt.Coordinator,
 		ToolsConfig: adk.ToolsConfig{
 			ToolsNodeConfig: compose.ToolsNodeConfig{
 				Tools: []tool.BaseTool{
-					webSearch, tools.NewAskForClarificationTool()},
+					webSearch, weatherSearch, tools.NewAskForClarificationTool(),
+				},
 			},
 		},
-		MaxIterations: 5,
+		MaxIterations: MaxIter,
 	})
 	if err != nil {
 		Logger.Error("Failed to create supervisor agent", zap.Error(err))
