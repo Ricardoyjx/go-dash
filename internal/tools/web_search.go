@@ -22,14 +22,16 @@ func NewWebSearchTool() (tool.InvokableTool, error) {
 	return utils.InferTool(
 		"web_search",
 		"Search the web for the given query and return relevant snippets.",
-		func(_ context.Context, input *WebSearchInput) (*WebSearchOutput, error) {
-			if input.Query == "" {
-				return nil, fmt.Errorf("query is required")
-			}
-			// TODO: call a real search provider (Tavily / SerpAPI / Bing Search ...).
-			return &WebSearchOutput{
-				Results: []string{"[mock result] " + input.Query},
-			}, nil
-		},
+		WebSearch,
 	)
+}
+
+func WebSearch(ctx context.Context, input *WebSearchInput) (*WebSearchOutput, error) {
+	if input.Query == "" {
+		return nil, fmt.Errorf("query is required")
+	}
+	return &WebSearchOutput{
+		Results: []string{"[mock result] " + input.Query},
+	}, nil
+
 }
