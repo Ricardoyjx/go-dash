@@ -22,7 +22,7 @@ func NewDeepSeekModel(ctx context.Context, config config.ModelConfig) (*deepseek
 	}
 
 	model, err := deepseek.NewChatModel(ctx, &deepseek.ChatModelConfig{
-		APIKey:  config.ModerlApiKey,
+		APIKey:  config.ModelAPIKey,
 		Model:   config.ModelName,
 		BaseURL: config.ModelBaseUrl,
 	})
