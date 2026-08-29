@@ -23,7 +23,8 @@ go-dash/
 │   ├── memory/                  # CheckPointStore 等状态存储
 │   ├── model/                   # ChatModel 初始化（OpenAI / Ark / DeepSeek ...）
 │   ├── prompt/                  # 各 Agent 的 Instruction / 提示词
-│   └── tools/                   # Agent 工具（web_search / knowledge_base / ...）
+│   ├── tools/                   # Agent 工具（web_search / knowledge_base / ...）
+│   └── utils/                   # 通用工具（logger、字符串 / 时间 / 错误处理等）
 ├── configs/                     # 配置文件（.env.example 等）
 ├── docs/                        # 架构与设计文档
 ├── README.md
@@ -37,6 +38,7 @@ go-dash/
 | `cmd/server` | 程序入口，负责装配 Config → Model → Agent → Runner 并启动服务 |
 | `internal/agent` | Agent 层：`subagents` 放各子 Agent，`supervisor.go` 放协调 Agent，`assemble.go` 统一组装 |
 | `internal/tools` | 工具层，Agent 通过 ToolCall 调用（搜索、知识库、人工澄清等） |
+| `internal/utils` | 通用工具层，存放 logger 及跨模块复用的工具函数 |
 | `internal/prompt` | 提示词层，集中管理各 Agent 的 Instruction，便于调整 |
 | `internal/model` | 模型层，按 `MODEL_TYPE` 创建不同的 ChatModel |
 | `internal/memory` | 状态层，提供 CheckPointStore 实现（内存 / 持久化） |
